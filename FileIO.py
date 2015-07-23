@@ -21,3 +21,6 @@ def loadEnvironment(x,y):
             E.setComponent(i,j,EnvironmentComponent(i,j,int(f[j][i])))
     
     return E    
+
+def loadChunk(x,y,texture):
+    return Chunk(Vector(32*20*x,32*20*y),Vector(x,y),loadEnvironment(x,y),32,texture)
