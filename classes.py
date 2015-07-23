@@ -11,7 +11,7 @@ class EnvironmentComponent:
     TOP = 2
     RIGHT = 3
     # initiate environment component of environmentType. Other data changes respectively, unless stated otherwise
-    def __init__(self, x, y, environmentType, isSolid = DEFAULT, effect = DEFAULT, orientations = DEFAULT):
+    def __init__(self, x, y, environmentType, isSolid = DEFAULT, effect = DEFAULT, orientation = DEFAULT):
         self.x = x
         self.y = y
         self.environmentType = environmentType
@@ -54,7 +54,7 @@ class Environment:
             s = []
             for b in range(y):
                 s.append('')
-            grid.append(s)
+            self.grid.append(s)
 
     def setX(self,x):
         self.x = x
@@ -229,3 +229,16 @@ class Stats:
         if self.strength < stat.getStrength() or self.intelligence < stat.getIntelligence() or self.wisdom < stat.getWisdom() or self.luck < stat.getLuck():
             return False
         return True
+
+class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    def getX(self):
+        return self.x
+    def setX(self,x):
+        self.x = x
+    def getY(self):
+        return self.y
+    def setY(self,y):
+        self.y = y
