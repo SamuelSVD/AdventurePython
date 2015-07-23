@@ -1,0 +1,54 @@
+|------------------------------------------------------------------------|
+| Game By: Derek Arts and Samuel Vergara                                 |
+| Current version: 1.1                                                   |
+|------------------------------------------------------------------------|
+
+|------------------------------------------------------------------------|
+| Format                                                                 |
+| Date                                                                   |
+| Version #.#                                                            |
+| Added classes                                                          |
+| Changes to classes                                                     |
+| Other Changes                                                          |
+| Bug Reports                                                            |
+| Bug Fixes                                                              |
+|------------------------------------------------------------------------|
+
+==========================================================================
+01 April 2014
+Version 1.1
+Added Classes:
+ - EnvironmentComponent
+	- data: x, y, environemtType, solid, effect, orientation
+	- methods:
+		 - getters and setters for data
+ - Environment
+	- data:
+	- methods:
+		 - getters and setters for data
+    		 - set/getComponents
+        		• change/get the whole environment
+        	 	• *- OPTIONAL -*
+ - Item
+	- data: itemNumber, name, itemType, effect, equipRequirements, description
+	- methods:
+		 - getters and setters for data
+		 - isUsable()
+			• returns whether or not the item is usable.
+			• e.g. Potion.
+		 - isEquipable()
+			• returns whether or not the item is an equip type
+			• e.g. Helmet, Shoes.
+ - Inventory
+	- data: size, numItems, inventory
+	- methods:
+		 - getters and setters for data
+		 - addItem(item)
+			• add 'item' to first empty slot in inventory
+		 - removeItem(num)
+			• remove item in 'num' slot in inventory
+		 - takeItem(num)
+			• remove item in 'num' slot and return it
+		 - switchItem(num, item)
+			• switch the item in 'num' slot with 'item'
+			  and return the item previously there.
