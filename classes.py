@@ -1,3 +1,4 @@
+import pygame
 class EnvironmentComponent:
     DEFAULT = 0
     # Environment Types
@@ -229,7 +230,8 @@ class Stats:
         if self.strength < stat.getStrength() or self.intelligence < stat.getIntelligence() or self.wisdom < stat.getWisdom() or self.luck < stat.getLuck():
             return False
         return True
-
+############################################################################################################################################################
+    
 class Vector:
     def __init__(self, x, y):
         self.x = x
@@ -242,3 +244,29 @@ class Vector:
         return self.y
     def setY(self,y):
         self.y = y
+
+############################################################################################################################################################
+
+class Chunk:
+    image = None
+    def __init__(self, position,location,environment,size,texture):
+        self.position = position
+        self.location = location
+        self.environment = environment
+        self.size = size
+        self.texture = texture
+        self.generateImage()
+
+    def generateImage(self):
+        self.image = pygame.Surface((self.size*self.environment.getX(),self.size*self.environment.getY()))
+        for j in range(self.environment.getY()):
+            for i in range(self.environment.getX()):
+                self.image.blit(self.texture[self.environment.getComponent(i,j).getType()],(self.size*i,self.size*j))
+
+    def drawChunk(self, surface):
+        surface.blit(self.image,(self.position.getX(),self.position.getY()))
+
+    def drawChunkI(self, surface):
+        for i in range(self.environment.x):
+            for j in range(self.environment.y):
+                surface.blit(self.texture[self.environment.getComponent(i,j).getType()],(self.size*i+self.position.getX(),self.size*j+self.position.getY()))
