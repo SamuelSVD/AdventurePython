@@ -1,0 +1,61 @@
+#!/usr/bin/env python
+from twisted.internet.protocol import DatagramProtocol
+from twisted.internet import reactor
+from twisted.internet.task import LoopingCall
+from twisted.internet.protocol import ClientFactory
+from twisted.protocols.basic import LineReceiver
+from classes import *
+# ----- UDP --------------------------------------------------------- #
+class ClientProtocolUDP(DatagramProtocol):
+	def __init__(self, adventure, (host, port)):
+		self.adventure = adventure
+		self.dest_host = host
+		self.dest_port = port
+		self.port = None
+		adventure.setClientProtocolUDP(self)
+	def datagramReceived(self, data, (host, port)):
+		self.adventure.handleMessageUDP(data)
+	def sendLine(self, message):
+		self.transport.write(message, (self.dest_host, self.dest_port))
+
+# ----- TCP --------------------------------------------------------- #
+class ClientProtocolTCP(LineReceiver):
+	def __init__(self, adventure):
+		#print 'New TCP Client'
+		self.adventure = adventure
+		adventure.setClientProtocolTCP(self)
+	def lineReceived(self, message):
+		#print 'Received:\t%s'%message
+		self.adventure.handleMessageTCP(message)
+	def connectionMade(self):
+		self.sendLine('U%d' % self.adventure.client_protocol_udp.port)
+		pass
+class ClientFactoryTCP(ClientFactory):
+	def __init__(self, adventure):
+		self.adventure = adventure
+	def clientConnectionFailed(self, connector, reason):
+		print 'connection failed:', reason.getErrorMessage()
+		if reactor.running: reactor.stop()
+	def clientConnectionLost(self, connector, reason):
+		print 'connection lost:', reason.getErrorMessage()
+		#connector.connect()
+		if reactor.running: reactor.stop()
+	def buildProtocol(self, addr):
+		return ClientProtocolTCP(self.adventure)
+
+
+def main():
+#	host = 'localhost'
+	host = '99.243.137.99'
+	adventure = Adventure()
+	udp = ClientProtocolUDP(adventure, (host,11110))
+	game_loop = LoopingCall(adventure.loop)
+	game_loop.start(0.033, now = False)
+	message_loop = LoopingCall(adventure.sendQueues)
+	message_loop.start(0.05, now = False)
+	udp.port = reactor.listenUDP(0,udp).getHost().port
+	reactor.connectTCP(host, 11110, ClientFactoryTCP(adventure))
+	reactor.run()
+
+if __name__ == '__main__':
+	main()
