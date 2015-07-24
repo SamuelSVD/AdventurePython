@@ -1,0 +1,19 @@
+'R'	Client -> Server	'Registering username and password'	'R%s %s' % (username, password)
+'r' Server -> Client	'Check if a register is a success, using decider, message'	'r%d %s' % (decider, message)
+'L' Client -> Server	'Attempted login with username and password'	'L%s %s' % (username, password)
+'l' Server -> Client	'Check if a login is successful. decider & message' 'l%d %s' % (decider, message)
+'T' Client -> Server	'Send a message from the client'	'T%s' % message
+'t' Server -> Client	'Forwarded message from one client to the rest'	't%s: %s' %(source_username, message)
+'c' Server -> Client	'Client's character information'
+'C' Server -> Client	'Other character's information for client'
+'E' Client -> Everyone	'Broadcast entity position'	'E%s %0.0f %0.0f %d %d %d' % (id, pos.x, pos.y, direction, speed, moving)
+	Server -> Everyone
+'U' Client -> Server	'Give the server the location of UDP port.'	'U%d' % port
+'A' Client -> Server	'Request info about this entity'	'A%d' % id
+'D' Server -> Client	'Destroy entity of this id'	'D%d' % id
+'M' Client -> Server	'Request the specified chunk' 'M%d %d' % (chunk_x, chunk_y)
+
+TODO
+'m' Server -> Client	'Message containing the location and specs of chunk.' 'm%s%s %d' % (('f'/'e'), chunk_location, byte_array)
+'B' Client -> Server	'Sent interaction with this block' 'B%s %d %d' % (chunk, block_x, block_y)
+'b' Server -> Client	'Change to current map'	'b%d %s %d %d %d' % (chunk_x, chunk_y, block_x, block_y, block_id)
